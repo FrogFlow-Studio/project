@@ -3,1110 +3,865 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Платформа онлайн-курса «Web разработчик» с применением ИИ</title>
+  <title>Платформа онлайн-курса «Web разработчик» с ИИ</title>
   <style>
     :root {
-      --bg: #f4f6fb;
-      --surface: #ffffff;
-      --surface-alt: #f8fafc;
-      --border: #dce3f0;
-      --text: #0f172a;
-      --muted: #475569;
-      --primary: #1d4ed8;
-      --primary-hover: #1e40af;
-      --primary-soft: #eff6ff;
-      --accent: #0d9488;
-      --success: #15803d;
-      --success-soft: #f0fdf4;
-      --warn: #b45309;
-      --warn-soft: #fffbeb;
-      --danger: #b91c1c;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
-
-    /* Верхняя шапка */
-    .topbar {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 14px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #1e293b;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand-badge {
-      background: linear-gradient(135deg, #2563eb, #0d9488);
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-    }
-
-    .brand-title h1 {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .brand-title p {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .topbar-controls {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .sys-pill {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #cbd5e1;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .sys-dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-    }
-
-    .role-switcher {
-      display: flex;
-      background: #1e293b;
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-    }
-
-    .role-btn {
-      background: transparent;
-      color: #cbd5e1;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .role-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    /* Навигационные вкладки */
-    .subnav {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-tabs {
-      display: flex;
-      gap: 6px;
-    }
-
-    .nav-tab {
-      background: transparent;
-      border: none;
-      border-bottom: 3px solid transparent;
-      padding: 14px 18px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    .nav-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .user-info {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    /* Основной контейнер */
-    .container {
-      max-width: 1340px;
-      margin: 22px auto;
-      padding: 0 24px;
-    }
-
-    .view-panel {
-      display: none;
-    }
-
-    .view-panel.active {
-      display: block;
-    }
-
-    /* Двухколоночный макет прохождения курса */
-    .workspace-grid {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-      margin-bottom: 18px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .card-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-
-    .badge-blue {
-      background: var(--primary-soft);
-      color: var(--primary);
-      border: 1px solid #bfdbfe;
-    }
-
-    .badge-green {
-      background: var(--success-soft);
-      color: var(--success);
-      border: 1px solid #bbf7d0;
-    }
-
-    .badge-amber {
-      background: var(--warn-soft);
-      color: var(--warn);
-      border: 1px solid #fde68a;
-    }
-
-    /* Список блоков слева */
-    .course-select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 600;
-      margin-bottom: 14px;
-      background: var(--surface-alt);
-    }
-
-    .block-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .block-item {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      cursor: pointer;
-      background: var(--surface-alt);
-      transition: all 0.15s;
-    }
-
-    .block-item:hover {
-      border-color: #93c5fd;
-    }
-
-    .block-item.active {
-      background: var(--primary-soft);
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
-    }
-
-    .block-item-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .block-item-title {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    /* Правая часть урока */
-    .concept-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 12px 0 16px;
-    }
-
-    .concept-tag {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      color: #334155;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-
-    .theory-box {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin-bottom: 16px;
-      font-size: 14px;
-    }
-
-    .theory-box h3 {
-      font-size: 15px;
-      margin: 10px 0 6px;
-      color: #1e293b;
-    }
-
-    .theory-box h3:first-child {
-      margin-top: 0;
-    }
-
-    .theory-box p, .theory-box li {
-      margin-bottom: 8px;
-      color: #334155;
-    }
-
-    .theory-box ul {
-      padding-left: 20px;
-    }
-
-    pre.code-preview {
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 12.5px;
-      overflow-x: auto;
-      margin-top: 10px;
-    }
-
-    /* Секции тестов и практики */
-    .split-two {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .quiz-q {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      background: var(--surface-alt);
-    }
-
-    .quiz-q-title {
-      font-weight: 600;
-      font-size: 13.5px;
-      margin-bottom: 8px;
-    }
-
-    .quiz-opt {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      padding: 5px 6px;
-      cursor: pointer;
-    }
-
-    textarea.code-editor {
-      width: 100%;
-      min-height: 155px;
-      background: #0f172a;
-      color: #f8fafc;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 12.5px;
-      resize: vertical;
-      margin: 10px 0;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      padding: 9px 16px;
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-teal {
-      background: var(--accent);
-    }
-
-    .feedback-alert {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-    }
-
-    .feedback-alert.pass {
-      background: var(--success-soft);
-      border-color: #86efac;
-      color: #14532d;
-    }
-
-    .feedback-alert.fail {
-      background: var(--warn-soft);
-      border-color: #fcd34d;
-      color: #78350f;
-    }
-
-    /* Форма ИИ-генератора курса */
-    .form-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr auto;
-      gap: 12px;
-      align-items: end;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 5px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 13.5px;
-    }
-
-    /* Таблицы статистики */
-    table.data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    table.data-table th,
-    table.data-table td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    table.data-table th {
-      background: #f1f5f9;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .kpi-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-    }
-
-    .kpi-box .kpi-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .kpi-box .kpi-val {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary);
-    }
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --accent: #8b5cf6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--card-border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 20; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; }
+    .brand-badge { background: linear-gradient(135deg, var(--primary), var(--accent)); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; }
+    .user-panel { display: flex; align-items: center; gap: 12px; }
+    .role-badge { padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .role-teacher { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid var(--accent); }
+    .role-student { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid var(--success); }
+    .btn { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.15s; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #334155; color: #f8fafc; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-success { background: var(--success); }
+    .btn-success:hover { background: #059669; }
+    .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; flex: 1; width: 100%; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.5; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+    .form-control { width: 100%; background: #0f172a; border: 1px solid var(--card-border); color: #fff; padding: 10px 12px; border-radius: 6px; font-size: 0.95rem; }
+    .form-control:focus { outline: none; border-color: var(--primary); }
+    .auth-box { max-width: 420px; margin: 60px auto; }
+    .auth-toggle { display: flex; gap: 10px; margin-bottom: 16px; }
+    .auth-toggle button { flex: 1; padding: 8px; background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); border-radius: 6px; cursor: pointer; }
+    .auth-toggle button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .block-card { background: #131d31; border: 1px solid var(--card-border); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+    .block-card.locked { opacity: 0.6; }
+    .block-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .status-pill { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .status-outline { background: #334155; color: #cbd5e1; }
+    .status-ready { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .status-locked { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .status-passed { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid var(--success); }
+    .progress-bar-bg { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+    .progress-bar-fill { background: var(--success); height: 100%; width: 0%; transition: width 0.3s; }
+    pre { background: #090d16; padding: 14px; border-radius: 8px; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85rem; border: 1px solid #1e293b; color: #e2e8f0; margin: 12px 0; }
+    .quiz-option { display: block; background: #0f172a; border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.15s; }
+    .quiz-option:hover { border-color: var(--primary); }
+    .quiz-option input { margin-right: 8px; }
+    .quiz-result { padding: 12px; border-radius: 6px; margin-top: 14px; font-size: 0.9rem; }
+    .quiz-result.pass { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: #6ee7b7; }
+    .quiz-result.fail { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; }
+    .loading-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--card-border); margin-bottom: 16px; }
+    .tab { padding: 10px 16px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-weight: 600; border-bottom: 2px solid transparent; }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <!-- Шапка платформы -->
-  <header class="topbar">
+
+  <header>
     <div class="brand">
-      <div class="brand-badge">AI</div>
-      <div class="brand-title">
-        <h1>Онлайн-курс «Web разработчик» — ИИ-платформа дистанционного обучения</h1>
-        <p>Автоматическая декомпозиция темы на учебные блоки, генерация тестов и проверка кода (Claude API + Supabase PostgreSQL)</p>
-      </div>
+      <div class="brand-badge">AI Platform</div>
+      <span>Онлайн-курс «Web разработчик»</span>
     </div>
-    <div class="topbar-controls">
-      <div class="sys-pill">
-        <span class="sys-dot"></span>
-        <span id="sysStatusText">СУБД: PostgreSQL (Supabase) | ИИ: Claude 3.5 Sonnet</span>
-      </div>
-      <div class="role-switcher">
-        <button class="role-btn active" id="roleStudentBtn" onclick="switchRole('student')">Режим: Студент</button>
-        <button class="role-btn" id="roleTeacherBtn" onclick="switchRole('teacher')">Режим: Преподаватель</button>
-      </div>
+    <div class="user-panel" id="userPanel">
+      <span id="userInfo"></span>
+      <button class="btn btn-secondary btn-sm" id="logoutBtn" onclick="handleLogout()">Выйти</button>
     </div>
   </header>
 
-  <!-- Навигационная панель -->
-  <nav class="subnav">
-    <div class="nav-tabs">
-      <button class="nav-tab active" id="tabLearn" onclick="switchTab('learn')">1. Изучение блоков и проверка заданий</button>
-      <button class="nav-tab" id="tabGenerator" onclick="switchTab('generator')">2. ИИ-генератор курса и блоков (Claude API)</button>
-      <button class="nav-tab" id="tabMonitor" onclick="switchTab('monitor')">3. Кабинет преподавателя и журнал проверок</button>
+  <div class="container">
+    <!-- БЛОК 1: АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ -->
+    <div id="authView" class="auth-box card">
+      <div class="auth-toggle">
+        <button id="loginTabBtn" class="active" onclick="switchAuthTab('login')">Вход</button>
+        <button id="regTabBtn" onclick="switchAuthTab('register')">Регистрация</button>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group" id="nameGroup" style="display:none;">
+          <label>Ваше ФИО / Имя</label>
+          <input type="text" id="authName" class="form-control" placeholder="Иванов Иван" />
+        </div>
+
+        <div class="form-group" id="roleGroup" style="display:none;">
+          <label>Ваша роль в платформе</label>
+          <select id="authRole" class="form-control">
+            <option value="student">Студент (прохождение курсов)</option>
+            <option value="teacher">Преподаватель (создание курсов через ИИ)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="authEmail" class="form-control" required placeholder="user@kru.kz" />
+        </div>
+
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" id="authPassword" class="form-control" required minlength="6" placeholder="Минимум 6 символов" />
+        </div>
+
+        <div id="authError" style="color:var(--danger); font-size:0.85rem; margin-bottom:12px; display:none;"></div>
+
+        <button type="submit" id="authSubmitBtn" class="btn" style="width:100%;">Войти в систему</button>
+      </form>
     </div>
-    <div class="user-info" id="activeUserLabel">
-      Обучающийся: Прободяк Я.С. (гр. ИТиР-3, ОП 6В06103)
+
+    <!-- БЛОК 2: ИНТЕРФЕЙС ПРЕПОДАВАТЕЛЯ -->
+    <div id="teacherView" class="hidden">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTeacherTab('courses')">Мои курсы</button>
+        <button class="tab" onclick="switchTeacherTab('create')">Создать курс через ИИ</button>
+      </div>
+
+      <!-- Вкладка 1: Список курсов преподавателя -->
+      <div id="teacherCoursesTab">
+        <div class="grid-3" id="teacherCoursesList"></div>
+      </div>
+
+      <!-- Вкладка 2: Форма генерации плана курса по теме -->
+      <div id="teacherCreateTab" class="hidden">
+        <div class="card">
+          <div class="card-title">Генерация плана курса по теме через Claude API</div>
+          <div class="card-desc">Напишите любую тему (например, «Разработка REST API на Node.js и базы данных PostgreSQL»). ИИ декомпозирует тему на последовательные учебные блоки. Вы сможете отредактировать план перед генерацией подробного контента.</div>
+          
+          <form onsubmit="handleCreateCourse(event)">
+            <div class="form-group">
+              <label>Тема курса для разбора ИИ</label>
+              <textarea id="courseTopic" class="form-control" rows="3" required placeholder="Например: Полный стек Web-разработчика: семантическая верстка, асинхронный JavaScript, сервер на Express и базы данных Supabase"></textarea>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Уровень сложности</label>
+                <select id="courseDifficulty" class="form-control">
+                  <option value="Базовый">Базовый (для начинающих)</option>
+                  <option value="Средний" selected>Средний (студенты 3 курса)</option>
+                  <option value="Продвинутый">Продвинутый (Senior/Архитектура)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Количество учебных блоков</label>
+                <select id="courseBlocksCount" class="form-control">
+                  <option value="3">3 учебных блока</option>
+                  <option value="4" selected>4 учебных блока</option>
+                  <option value="5">5 учебных блоков</option>
+                  <option value="6">6 учебных блоков</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" id="genOutlineBtn" class="btn">
+              <span>Разобрать тему и составить план (ИИ)</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Вкладка 3: Редактор и генератор блоков конкретного курса -->
+      <div id="teacherCourseDetail" class="hidden">
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-secondary btn-sm" onclick="backToTeacherCourses()">← Назад к списку курсов</button>
+        </div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div class="card-title" id="tCourseTitle"></div>
+              <div class="card-desc" id="tCourseDesc"></div>
+            </div>
+            <div id="tCoursePublishBtnContainer"></div>
+          </div>
+          <div style="margin-top:10px;" id="tCourseInviteBox"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Учебные блоки курса</div>
+          <div class="card-desc">Каждый блок генерируется по отдельности: ИИ создаёт теоретический конспект, рабочий пример кода, тест проверки знаний и практическое задание.</div>
+          <div id="tBlocksList"></div>
+        </div>
+
+        <!-- Аналитика по студентам этого курса -->
+        <div class="card">
+          <div class="card-title">Успеваемость студентов курса</div>
+          <div id="tStudentsList"></div>
+        </div>
+      </div>
     </div>
-  </nav>
 
-  <!-- Основная рабочая область -->
-  <main class="container">
-    <!-- ВКЛАДКА 1: ИЗУЧЕНИЕ КУРСА СТУДЕНТОМ -->
-    <section class="view-panel active" id="panel-learn">
-      <div class="workspace-grid">
-        <!-- Левая колонка: выбор курса и список сгенерированных ИИ блоков -->
-        <aside>
-          <div class="card">
-            <div class="card-header">
-              <h2>Программа и блоки курса</h2>
-              <span class="badge badge-blue" id="courseProgressBadge">Прогресс: 75%</span>
-            </div>
-            <label style="font-size:12px; color:#475569; font-weight:600; display:block; margin-bottom:4px;">Активный онлайн-курс:</label>
-            <select id="courseSelector" class="course-select" onchange="onCourseSelectChange()"></select>
-            <p id="courseDescriptionText" style="font-size:12.5px; color:#475569; margin-bottom:14px;"></p>
-            <div class="block-list" id="blockListContainer"></div>
-          </div>
-        </aside>
-
-        <!-- Правая колонка: теория блока, тест, практика и ИИ-наставник -->
-        <div>
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <span class="badge badge-blue" id="activeBlockOrder">Учебный блок 1</span>
-                <h2 id="activeBlockTitle" style="margin-top:4px; font-size:18px;">Загрузка учебного блока...</h2>
-              </div>
-              <span class="badge badge-green" id="activeBlockTime">45 мин.</span>
-            </div>
-
-            <p id="activeBlockSummary" style="font-size:13.5px; color:#475569; margin-bottom:8px;"></p>
-            <div class="concept-tags" id="activeBlockConcepts"></div>
-
-            <div class="theory-box" id="activeBlockTheory"></div>
-
-            <div>
-              <strong style="font-size:13px; color:#1e293b;">Пример программного кода к блоку:</strong>
-              <pre class="code-preview" id="activeBlockCode"></pre>
-            </div>
-          </div>
-
-          <!-- Две колонки: Автоматический тест + Практическая задача с ИИ-проверкой -->
-          <div class="split-two">
-            <!-- Блок тестирования -->
-            <div class="card">
-              <div class="card-header">
-                <h2>Тестовая проверка знаний по блоку</h2>
-                <span class="badge badge-blue">Порог: 70%</span>
-              </div>
-              <div id="quizContainer"></div>
-              <button class="btn" id="submitQuizBtn" onclick="submitBlockQuiz()">Проверить ответы на сервере</button>
-              <div id="quizResultBox" class="feedback-alert" style="display:none;"></div>
-            </div>
-
-            <!-- Блок практического задания и ИИ-наставника -->
-            <div>
-              <div class="card">
-                <div class="card-header">
-                  <h2>Практическое задание (ИИ-проверка кода)</h2>
-                  <span class="badge badge-green">Claude Code Review</span>
-                </div>
-                <p id="practiceTitle" style="font-weight:600; font-size:13.5px; margin-bottom:4px;"></p>
-                <p id="practiceInstructions" style="font-size:13px; color:#475569;"></p>
-                <textarea id="practiceCodeInput" class="code-editor" spellcheck="false"></textarea>
-                <div style="display:flex; gap:10px;">
-                  <button class="btn" id="submitPracticeBtn" onclick="submitPracticeCode()">Отправить код на проверку</button>
-                </div>
-                <div id="practiceResultBox" class="feedback-alert" style="display:none;"></div>
-              </div>
-
-              <!-- ИИ-наставник -->
-              <div class="card">
-                <div class="card-header">
-                  <h2>ИИ-наставник урока (режим подсказок)</h2>
-                  <span class="badge badge-amber">Без выдачи готового ответа</span>
-                </div>
-                <p style="font-size:12.5px; color:#475569; margin-bottom:8px;">
-                  Задайте вопрос по теории блока или ошибке в коде. ИИ-помощник получает контекст урока и направляет к решению.
-                </p>
-                <div style="display:flex; gap:8px;">
-                  <input type="text" id="tutorQuestionInput" class="form-control" value="Почему в Express тело запроса req.body может быть undefined при POST-запросе?" />
-                  <button class="btn btn-teal" id="askTutorBtn" onclick="askTutorQuestion()">Спросить ИИ</button>
-                </div>
-                <div id="tutorAnswerBox" class="feedback-alert pass" style=" margin-top:10px;">
-                  <strong>Ответ ИИ-наставника (Claude):</strong> В Express по умолчанию тело входящего запроса не разбирается автоматически. Чтобы свойство <code>req.body</code> содержало разобранный JSON-объект, перед объявлением маршрутов подключите промежуточный обработчик <code>app.use(express.json())</code> и проверьте заголовок <code>Content-Type: application/json</code>.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ВКЛАДКА 2: ИИ-ГЕНЕРАТОР КУРСА И УЧЕБНЫХ БЛОКОВ -->
-    <section class="view-panel" id="panel-generator">
+    <!-- БЛОК 3: ИНТЕРФЕЙС СТУДЕНТА -->
+    <div id="studentView" class="hidden">
+      <!-- Вступление в курс по коду приглашения -->
       <div class="card">
-        <div class="card-header">
-          <h2>Интеллектуальное проектирование курса по теме (Декомпозиция через Claude API)</h2>
-          <span class="badge badge-blue">Модуль генерации контента</span>
-        </div>
-        <p style="font-size:13.5px; color:#475569; margin-bottom:16px;">
-          Введите тему курса или раздела веб-разработки. Сервер сформирует системный промпт к языковой модели Claude, разобьёт тему на логические учебные блоки, составит теоретический конспект, примеры кода, контрольные тесты и критерии проверки практических заданий, после чего сохранит структуру в СУБД PostgreSQL (Supabase).
-        </p>
+        <div class="card-title">Записаться на курс по коду приглашения</div>
+        <div class="card-desc">Введите 6-значный код приглашения, который вам предоставил преподаватель.</div>
+        <form onsubmit="handleJoinCourse(event)" style="display:flex; gap:10px; max-width:400px;">
+          <input type="text" id="inviteCodeInput" class="form-control" placeholder="Например: 7K2B9X" maxlength="6" style="text-transform:uppercase;" required />
+          <button type="submit" class="btn" style="white-space:nowrap;">Записаться</button>
+        </form>
+      </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="genTopicInput">Тема курса или учебной дисциплины для разбора ИИ:</label>
-            <input type="text" id="genTopicInput" class="form-control" value="Разработка REST API на Node.js, авторизация JWT и работа с БД PostgreSQL" />
-          </div>
-          <div class="form-group">
-            <label for="genDifficultyInput">Уровень сложности:</label>
-            <select id="genDifficultyInput" class="form-control">
-              <option value="Базовый">Базовый (1–2 курс)</option>
-              <option value="Средний" selected>Средний (3 курс)</option>
-              <option value="Продвинутый">Продвинутый (профиль)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="genBlocksCountInput">Число учебных блоков:</label>
-            <select id="genBlocksCountInput" class="form-control">
-              <option value="3" selected>3 учебных блока</option>
-              <option value="4">4 учебных блока</option>
-            </select>
-          </div>
-          <div>
-            <button class="btn" id="generateCourseBtn" onclick="generateNewCourse()">Сгенерировать блоки и тесты (ИИ)</button>
+      <!-- Список курсов студента -->
+      <div id="studentCoursesSection">
+        <div class="card-title" style="margin-bottom:12px;">Мои учебные курсы</div>
+        <div class="grid-3" id="studentCoursesList"></div>
+      </div>
+
+      <!-- Просмотр блоков выбранного курса -->
+      <div id="studentCourseDetail" class="hidden">
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-secondary btn-sm" onclick="backToStudentCourses()">← Назад к моим курсам</button>
+        </div>
+        <div class="card">
+          <div class="card-title" id="sCourseTitle"></div>
+          <div class="card-desc" id="sCourseDesc"></div>
+          <div>Общий прогресс по курсу:</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="sCourseProgressFill"></div>
           </div>
         </div>
 
-        <div id="generatorStatusAlert" class="feedback-alert pass" style="display:none; margin-top:14px;"></div>
-      </div>
-
-      <!-- Предпросмотр сгенерированной структуры блоков -->
-      <div class="card">
-        <div class="card-header">
-          <h2>Структура сгенерированных учебных блоков, тестов и заданий в БД Supabase</h2>
-          <span class="badge badge-green" id="genPreviewModelBadge">Модель: claude-3-5-sonnet-20241022</span>
-        </div>
-        <div id="generatedBlocksPreview"></div>
-      </div>
-    </section>
-
-    <!-- ВКЛАДКА 3: КАБИНЕТ ПРЕПОДАВАТЕЛЯ И МОНИТОРИНГ -->
-    <section class="view-panel" id="panel-monitor">
-      <div class="kpi-grid">
-        <div class="kpi-box">
-          <div class="kpi-label">Опубликовано ИИ-курсов</div>
-          <div class="kpi-val" id="kpiCoursesCount">2</div>
-        </div>
-        <div class="kpi-box">
-          <div class="kpi-label">Учебных блоков и тестов в БД</div>
-          <div class="kpi-val" id="kpiBlocksCount">6 блоков / 18 тестов</div>
-        </div>
-        <div class="kpi-box">
-          <div class="kpi-label">Проверено решений студентов</div>
-          <div class="kpi-val" id="kpiSubmissionsCount">5</div>
-        </div>
-        <div class="kpi-box">
-          <div class="kpi-label">Средний балл автопроверки</div>
-          <div class="kpi-val" id="kpiAvgScore">91%</div>
+        <div class="card">
+          <div class="card-title">Программа курса (последовательное прохождение)</div>
+          <div class="card-desc">Следующий блок открывается только после успешной сдачи теста (от 70%) и практического задания в текущем блоке.</div>
+          <div id="sBlocksList"></div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2>Журнал проверенных решений студентов (Тесты + ИИ-ревью кода + Контроль преподавателя)</h2>
-          <span class="badge badge-blue">Таблица submissions (PostgreSQL / Supabase)</span>
+      <!-- Окно прохождения учебного блока -->
+      <div id="studentBlockWorkspace" class="hidden">
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-secondary btn-sm" onclick="backToStudentCourseDetail()">← Назад к программе курса</button>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Студент / Группа</th>
-              <th>Учебный блок курса</th>
-              <th>Тип проверки</th>
-              <th>Балл</th>
-              <th>Результат ИИ-анализа и тестов</th>
-              <th>Комментарий преподавателя</th>
-            </tr>
-          </thead>
-          <tbody id="submissionsTableBody"></tbody>
-        </table>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2>Журнал обращений студентов к ИИ-наставнику (Аудит подсказок)</h2>
-          <span class="badge badge-amber">Таблица ai_tutor_logs</span>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between;">
+            <div class="card-title" id="sbTitle"></div>
+            <span class="status-pill status-ready" id="sbTime"></span>
+          </div>
+          <div class="card-desc" id="sbSummary"></div>
+          <div style="margin-bottom:12px;" id="sbConcepts"></div>
+          <hr style="border-color:var(--card-border); margin:16px 0;" />
+          <div id="sbTheory" style="line-height:1.7; font-size:0.95rem;"></div>
+          <div style="margin-top:20px;">
+            <div style="font-weight:700; margin-bottom:6px;">Пример кода по теме:</div>
+            <pre id="sbCodeExample"></pre>
+          </div>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Студент</th>
-              <th>Учебный блок</th>
-              <th>Вопрос обучающегося</th>
-              <th>Ответ ИИ-наставника (ограниченный подсказкой)</th>
-            </tr>
-          </thead>
-          <tbody id="tutorLogsTableBody"></tbody>
-        </table>
+
+        <!-- Модуль тестирования знаний -->
+        <div class="card">
+          <div class="card-title">1. Тест на усвоение материала (порог зачёта 70%)</div>
+          <div class="card-desc">Выберите правильные ответы. Результат проверяется на сервере.</div>
+          <form id="sbQuizForm" onsubmit="handleQuizSubmit(event)">
+            <div id="sbQuizQuestions"></div>
+            <button type="submit" id="sbQuizBtn" class="btn" style="margin-top:12px;">Проверить тест на сервере</button>
+          </form>
+          <div id="sbQuizResult" class="hidden"></div>
+        </div>
+
+        <!-- Практическое задание и проверка кода -->
+        <div class="card">
+          <div class="card-title">2. Практическое задание (проверка кода через ИИ)</div>
+          <div class="card-desc" id="sbTaskInstructions"></div>
+          <textarea id="sbPracticeCode" class="form-control" rows="10" style="font-family:ui-monospace, monospace; font-size:0.85rem;" spellcheck="false"></textarea>
+          <div style="margin-top:12px;">
+            <button onclick="handlePracticeSubmit()" id="sbPracticeBtn" class="btn btn-success">Отправить решение на проверку (ИИ)</button>
+          </div>
+          <div id="sbPracticeResult" class="hidden" style="margin-top:14px;"></div>
+        </div>
+
+        <!-- ИИ-наставник -->
+        <div class="card">
+          <div class="card-title">ИИ-наставник урока (режим подсказок)</div>
+          <div class="card-desc">Задайте вопрос по теории или возникшей ошибке. Наставник направляет к решению, но не даёт готового ответа.</div>
+          <div style="display:flex; gap:10px;">
+            <input type="text" id="sbTutorQuestion" class="form-control" placeholder="Например: почему при отправке POST-запроса req.body оказывается undefined?" />
+            <button onclick="handleTutorAsk()" id="sbTutorBtn" class="btn">Спросить</button>
+          </div>
+          <div id="sbTutorAnswer" class="hidden" style="margin-top:14px; background:#0f172a; border:1px solid var(--card-border); padding:14px; border-radius:8px;"></div>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
 
   <script>
-    let currentRole = 'student';
-    let coursesList = [];
-    let currentCourse = null;
-    let currentBlockIndex = 0;
+    // Клиентское состояние
+    let state = {
+      user: null,
+      token: localStorage.getItem('access_token') || null,
+      refreshToken: localStorage.getItem('refresh_token') || null,
+      authMode: 'login',
+      currentTeacherCourse: null,
+      currentStudentCourse: null,
+      currentBlockId: null
+    };
 
-    async function initApp() {
-      await loadCoursesList();
-      await loadDashboardData();
+    // Обёртка для API запросов с авторизацией
+    async function api(path, options = {}) {
+      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      if (state.token) {
+        headers['Authorization'] = `Bearer ${state.token}`;
+      }
+      let res = await fetch(path, { ...options, headers });
+      if (res.status === 401 && state.refreshToken) {
+        // Попытка обновить токен
+        const rRes = await fetch('/api/auth/refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh_token: state.refreshToken })
+        });
+        if (rRes.ok) {
+          const rData = await rRes.json();
+          saveSession(rData.session, rData.profile);
+          headers['Authorization'] = `Bearer ${state.token}`;
+          res = await fetch(path, { ...options, headers });
+        } else {
+          handleLogout();
+          throw new Error('Сессия истекла, войдите снова');
+        }
+      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.error || 'Ошибка запроса к серверу');
+      }
+      return data;
     }
 
-    function switchRole(role) {
-      currentRole = role;
-      document.getElementById('roleStudentBtn').classList.toggle('active', role === 'student');
-      document.getElementById('roleTeacherBtn').classList.toggle('active', role === 'teacher');
-      const label = document.getElementById('activeUserLabel');
-      if (role === 'teacher') {
-        label.textContent = 'Преподаватель: Сатмаганбетова Ж.З. (Кафедра ПО, режим управления и контроля)';
-      } else {
-        label.textContent = 'Обучающийся: Прободяк Я.С. (гр. ИТиР-3, ОП 6В06103)';
+    function saveSession(session, profile) {
+      state.token = session.access_token;
+      state.refreshToken = session.refresh_token;
+      state.user = profile;
+      localStorage.setItem('access_token', session.access_token);
+      localStorage.setItem('refresh_token', session.refresh_token);
+    }
+
+    function handleLogout() {
+      state.token = null;
+      state.refreshToken = null;
+      state.user = null;
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      render();
+    }
+
+    // Инициализация при загрузке
+    async function init() {
+      if (state.token) {
+        try {
+          const data = await api('/api/auth/me');
+          state.user = data.user;
+        } catch (e) {
+          handleLogout();
+        }
+      }
+      render();
+    }
+
+    function switchAuthTab(mode) {
+      state.authMode = mode;
+      document.getElementById('loginTabBtn').classList.toggle('active', mode === 'login');
+      document.getElementById('regTabBtn').classList.toggle('active', mode === 'register');
+      document.getElementById('nameGroup').style.display = mode === 'register' ? 'block' : 'none';
+      document.getElementById('roleGroup').style.display = mode === 'register' ? 'block' : 'none';
+      document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Войти в систему' : 'Зарегистрироваться';
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const errBox = document.getElementById('authError');
+      errBox.style.display = 'none';
+
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      const full_name = document.getElementById('authName').value;
+      const role = document.getElementById('authRole').value;
+
+      try {
+        let data;
+        if (state.authMode === 'login') {
+          data = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+        } else {
+          data = await api('/api/auth/register', { method: 'POST', body: JSON.stringify({ email, password, full_name, role }) });
+        }
+        saveSession(data.session, data.profile);
+        render();
+      } catch (err) {
+        errBox.textContent = err.message;
+        errBox.style.display = 'block';
       }
     }
 
-    function switchTab(tabName) {
-      document.querySelectorAll('.nav-tab').forEach((b) => b.classList.remove('active'));
-      document.querySelectorAll('.view-panel').forEach((p) => p.classList.remove('active'));
+    function render() {
+      const authView = document.getElementById('authView');
+      const teacherView = document.getElementById('teacherView');
+      const studentView = document.getElementById('studentView');
+      const userPanel = document.getElementById('userPanel');
 
-      if (tabName === 'learn') {
-        document.getElementById('tabLearn').classList.add('active');
-        document.getElementById('panel-learn').classList.add('active');
-      } else if (tabName === 'generator') {
-        document.getElementById('tabGenerator').classList.add('active');
-        document.getElementById('panel-generator').classList.add('active');
-        renderGeneratorPreview();
-      } else if (tabName === 'monitor') {
-        document.getElementById('tabMonitor').classList.add('active');
-        document.getElementById('panel-monitor').classList.add('active');
-        loadDashboardData();
-      }
-    }
-
-    async function loadCoursesList(selectCourseId = null) {
-      const res = await fetch('/api/courses');
-      const data = await res.json();
-      coursesList = data.courses || [];
-
-      const selector = document.getElementById('courseSelector');
-      selector.innerHTML = coursesList
-        .map((c) => `<option value="${c.id}">${c.title} (${c.block_count} бл.)</option>`)
-        .join('');
-
-      const targetId = selectCourseId || (coursesList[0] && coursesList[0].id);
-      if (targetId) {
-        selector.value = targetId;
-        await selectCourse(targetId);
-      }
-    }
-
-    async function onCourseSelectChange() {
-      const selector = document.getElementById('courseSelector');
-      await selectCourse(selector.value);
-    }
-
-    async function selectCourse(courseId) {
-      const res = await fetch(`/api/courses/${courseId}?role=${currentRole}`);
-      const data = await res.json();
-      currentCourse = data.course;
-      currentBlockIndex = 0;
-
-      document.getElementById('courseDescriptionText').textContent = currentCourse.description;
-      renderBlockSidebar();
-      renderActiveBlock();
-      renderGeneratorPreview();
-    }
-
-    function renderBlockSidebar() {
-      const container = document.getElementById('blockListContainer');
-      if (!currentCourse || !currentCourse.blocks) {
-        container.innerHTML = '';
+      if (!state.user) {
+        authView.classList.remove('hidden');
+        teacherView.classList.add('hidden');
+        studentView.classList.add('hidden');
+        userPanel.style.display = 'none';
         return;
       }
 
-      container.innerHTML = currentCourse.blocks
-        .map((b, idx) => {
-          const isDone = idx < 3;
-          return `
-            <div class="block-item ${idx === currentBlockIndex ? 'active' : ''}" onclick="selectBlock(${idx})">
-              <div class="block-item-top">
-                <span>Модуль ${b.order_index} • ${b.estimated_minutes} мин.</span>
-                <span class="badge ${isDone ? 'badge-green' : 'badge-blue'}">${isDone ? '✓ Пройден' : 'Открыт'}</span>
-              </div>
-              <div class="block-item-title">${b.title}</div>
-            </div>
-          `;
-        })
-        .join('');
-    }
-
-    function selectBlock(idx) {
-      currentBlockIndex = idx;
-      renderBlockSidebar();
-      renderActiveBlock();
-    }
-
-    function escapeHtml(str = '') {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    }
-
-    function formatInlineMd(str = '') {
-      return escapeHtml(str)
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    }
-
-    function formatTheoryHtml(md = '') {
-      return md
-        .split('\n')
-        .map((line) => {
-          const trimmed = line.trim();
-          if (!trimmed) return '';
-          if (trimmed.startsWith('### ')) {
-            return `<h3>${formatInlineMd(trimmed.replace('### ', ''))}</h3>`;
-          }
-          if (trimmed.startsWith('* ')) {
-            return `<ul><li>${formatInlineMd(trimmed.replace(/^\*\s+/, ''))}</li></ul>`;
-          }
-          return `<p>${formatInlineMd(trimmed)}</p>`;
-        })
-        .join('');
-    }
-
-    function renderActiveBlock() {
-      if (!currentCourse || !currentCourse.blocks || !currentCourse.blocks[currentBlockIndex]) return;
-      const block = currentCourse.blocks[currentBlockIndex];
-
-      document.getElementById('activeBlockOrder').textContent = `Учебный блок ${block.order_index} из ${currentCourse.blocks.length}`;
-      document.getElementById('activeBlockTitle').textContent = block.title;
-      document.getElementById('activeBlockTime').textContent = `${block.estimated_minutes} мин.`;
-      document.getElementById('activeBlockSummary').textContent = block.summary;
-
-      document.getElementById('activeBlockConcepts').innerHTML = (block.key_concepts || [])
-        .map((c) => `<span class="concept-tag">${c}</span>`)
-        .join('');
-
-      document.getElementById('activeBlockTheory').innerHTML = formatTheoryHtml(block.theory_markdown);
-      document.getElementById('activeBlockCode').textContent = block.code_example;
-
-      // Отрисовка теста
-      const quizContainer = document.getElementById('quizContainer');
-      const questions = block.quiz_questions || [];
-      quizContainer.innerHTML = questions
-        .map(
-          (q, qIdx) => `
-          <div class="quiz-q">
-            <div class="quiz-q-title">${qIdx + 1}. ${escapeHtml(q.question_text)}</div>
-            ${(q.options || [])
-              .map(
-                (opt, oIdx) => `
-                <label class="quiz-opt">
-                  <input type="radio" name="quiz_q_${qIdx}" value="${oIdx}" ${(block.order_index === 1 && ((qIdx === 0 && oIdx === 1) || (qIdx === 1 && oIdx === 0) || (qIdx === 2 && oIdx === 1))) || (block.order_index !== 1 && oIdx === 0) ? 'checked' : ''} />
-                  <span>${escapeHtml(opt)}</span>
-                </label>
-              `
-              )
-              .join('')}
-          </div>
-        `
-        )
-        .join('');
-
-      document.getElementById('quizResultBox').style.display = 'none';
-
-      // Отрисовка практического задания
-      if (block.practice_task) {
-        document.getElementById('practiceTitle').textContent = block.practice_task.title;
-        document.getElementById('practiceInstructions').textContent = block.practice_task.instructions;
-        document.getElementById('practiceCodeInput').value = block.practice_task.starter_code || '';
-      }
-      document.getElementById('practiceResultBox').style.display = 'none';
-    }
-
-    async function submitBlockQuiz() {
-      const block = currentCourse.blocks[currentBlockIndex];
-      const questions = block.quiz_questions || [];
-      const answers = questions.map((_, qIdx) => {
-        const checked = document.querySelector(`input[name="quiz_q_${qIdx}"]:checked`);
-        return checked ? Number(checked.value) : -1;
-      });
-
-      const res = await fetch(`/api/blocks/${block.id}/quiz`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 'u-student-01', answers })
-      });
-      const data = await res.json();
-
-      const box = document.getElementById('quizResultBox');
-      box.style.display = 'block';
-      box.className = `feedback-alert ${data.passed ? 'pass' : 'fail'}`;
-      box.innerHTML = `<strong>Результат серверной проверки: ${data.score}% (${data.correctCount} из ${data.totalQuestions})</strong><br/>${data.submission.ai_feedback}`;
-      loadDashboardData();
-    }
-
-    async function submitPracticeCode() {
-      const block = currentCourse.blocks[currentBlockIndex];
-      const code = document.getElementById('practiceCodeInput').value;
-
-      const res = await fetch(`/api/blocks/${block.id}/practice`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: 'u-student-01',
-          courseId: currentCourse.id,
-          code
-        })
-      });
-      const data = await res.json();
-
-      const box = document.getElementById('practiceResultBox');
-      box.style.display = 'block';
-      box.className = `feedback-alert ${data.evaluation.passed ? 'pass' : 'fail'}`;
-      box.innerHTML = `<strong>Оценка: ${data.evaluation.score}/100 (${data.evaluation.passed ? 'Зачтено' : 'На доработку'})</strong><br/>${data.evaluation.feedback}`;
-      loadDashboardData();
-    }
-
-    async function askTutorQuestion() {
-      const block = currentCourse.blocks[currentBlockIndex];
-      const question = document.getElementById('tutorQuestionInput').value;
-      const code = document.getElementById('practiceCodeInput').value;
-
-      const res = await fetch(`/api/blocks/${block.id}/tutor`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: 'u-student-01',
-          question,
-          code
-        })
-      });
-      const data = await res.json();
-      const box = document.getElementById('tutorAnswerBox');
-      box.style.display = 'block';
-      box.innerHTML = `<strong>Ответ ИИ-наставника (Claude):</strong> ${data.answer}`;
-      loadDashboardData();
-    }
-
-    async function generateNewCourse() {
-      const topic = document.getElementById('genTopicInput').value;
-      const difficulty = document.getElementById('genDifficultyInput').value;
-      const blocksCount = document.getElementById('genBlocksCountInput').value;
-
-      const statusBox = document.getElementById('generatorStatusAlert');
-      statusBox.style.display = 'block';
-      statusBox.className = 'feedback-alert';
-      statusBox.textContent = 'Выполняется запрос к языковой модели Claude API: декомпозиция темы на учебные блоки, генерация тестов и практических заданий...';
-
-      const res = await fetch('/api/courses/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-user-role': 'teacher'
-        },
-        body: JSON.stringify({ topic, difficulty, blocksCount })
-      });
-      const data = await res.json();
-
-      if (res.ok && data.course) {
-        statusBox.className = 'feedback-alert pass';
-        statusBox.innerHTML = `<strong>✓ Успешно сгенерировано и сохранено в БД Supabase!</strong> Создан курс «${data.course.title}» (${data.course.blocks.length} учебных блока, тесты и практические задания).`;
-        await loadCoursesList(data.course.id);
-        await loadDashboardData();
-      } else {
-        statusBox.className = 'feedback-alert fail';
-        statusBox.textContent = data.error || 'Ошибка генерации курса';
-      }
-    }
-
-    function renderGeneratorPreview() {
-      const container = document.getElementById('generatedBlocksPreview');
-      if (!currentCourse || !currentCourse.blocks) return;
-
-      container.innerHTML = `
-        <div style="margin-bottom:12px; font-size:14px;">
-          <strong>Сгенерированный курс:</strong> ${currentCourse.title} &nbsp;|&nbsp;
-          <strong>Исходный промпт темы:</strong> <em>«${currentCourse.topic_prompt}»</em>
-        </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:60px;">№</th>
-              <th style="width:260px;">Учебный блок (модуль)</th>
-              <th>Ключевые концепции и содержание</th>
-              <th style="width:220px;">Автоматические тесты</th>
-              <th style="width:250px;">Практическое задание</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${currentCourse.blocks
-              .map(
-                (b) => `
-              <tr>
-                <td><strong>Блок ${b.order_index}</strong><br/><span style="font-size:11px;color:#475569;">${b.estimated_minutes} мин.</span></td>
-                <td><strong>${b.title}</strong></td>
-                <td>
-                  <div style="margin-bottom:6px;">${b.summary}</div>
-                  <div>${(b.key_concepts || []).map((k) => `<span class="badge badge-blue" style="margin-right:4px;">${k}</span>`).join('')}</div>
-                </td>
-                <td>${(b.quiz_questions || []).length} тестовых вопроса с серверной проверкой вариантов</td>
-                <td>${b.practice_task ? `<strong>${b.practice_task.title}</strong>` : '—'}</td>
-              </tr>
-            `
-              )
-              .join('')}
-          </tbody>
-        </table>
+      authView.classList.add('hidden');
+      userPanel.style.display = 'flex';
+      document.getElementById('userInfo').innerHTML = `
+        <strong>${state.user.full_name}</strong>
+        <span class="role-badge ${state.user.role === 'teacher' ? 'role-teacher' : 'role-student'}">
+          ${state.user.role === 'teacher' ? 'Преподаватель' : 'Студент'}
+        </span>
       `;
+
+      if (state.user.role === 'teacher') {
+        teacherView.classList.remove('hidden');
+        studentView.classList.add('hidden');
+        loadTeacherCourses();
+      } else {
+        teacherView.classList.add('hidden');
+        studentView.classList.remove('hidden');
+        loadStudentCourses();
+      }
     }
 
-    async function loadDashboardData() {
-      const res = await fetch('/api/dashboard');
-      const data = await res.json();
-
-      document.getElementById('kpiCoursesCount').textContent = coursesList.length;
-      document.getElementById('kpiSubmissionsCount').textContent = (data.submissions || []).length;
-
-      const scores = (data.submissions || []).map((s) => s.auto_score);
-      const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-      document.getElementById('kpiAvgScore').textContent = `${avg}%`;
-
-      const subBody = document.getElementById('submissionsTableBody');
-      subBody.innerHTML = (data.submissions || [])
-        .map(
-          (s) => `
-          <tr>
-            <td><strong>${s.student_name}</strong><br/><span style="font-size:11.5px;color:#475569;">${s.student_group}</span></td>
-            <td>${s.block_title}</td>
-            <td><span class="badge ${s.submission_type === 'practice' ? 'badge-green' : 'badge-blue'}">${s.submission_type === 'practice' ? 'Практика (Код)' : 'Тестирование'}</span></td>
-            <td><strong>${s.auto_score} / 100</strong><br/><span class="badge ${s.passed ? 'badge-green' : 'badge-amber'}">${s.passed ? 'Зачтено' : 'Доработка'}</span></td>
-            <td>${escapeHtml(s.ai_feedback || '')}</td>
-            <td>${escapeHtml(s.teacher_comment || 'Проверено автоматически')}</td>
-          </tr>
-        `
-        )
-        .join('');
-
-      const logBody = document.getElementById('tutorLogsTableBody');
-      logBody.innerHTML = (data.ai_tutor_logs || [])
-        .map(
-          (l) => `
-          <tr>
-            <td><strong>${l.student_name}</strong></td>
-            <td>${l.block_title}</td>
-            <td>${escapeHtml(l.student_question)}</td>
-            <td>${formatInlineMd(l.ai_response)}</td>
-          </tr>
-        `
-        )
-        .join('');
+    // ================= ПРЕПОДАВАТЕЛЬ =================
+    function switchTeacherTab(tab) {
+      document.querySelectorAll('#teacherView .tab').forEach((t, i) => {
+        t.classList.toggle('active', (tab === 'courses' && i === 0) || (tab === 'create' && i === 1));
+      });
+      document.getElementById('teacherCoursesTab').classList.toggle('hidden', tab !== 'courses');
+      document.getElementById('teacherCreateTab').classList.toggle('hidden', tab !== 'create');
+      document.getElementById('teacherCourseDetail').classList.add('hidden');
     }
 
-    window.addEventListener('DOMContentLoaded', initApp);
+    async function loadTeacherCourses() {
+      const { courses } = await api('/api/teacher/courses');
+      const list = document.getElementById('teacherCoursesList');
+      if (!courses.length) {
+        list.innerHTML = '<div class="card" style="grid-column: 1/-1;">У вас пока нет созданных курсов. Перейдите во вкладку «Создать курс через ИИ», чтобы сгенерировать первый курс по любой теме.</div>';
+        return;
+      }
+      list.innerHTML = courses.map((c) => `
+        <div class="card" style="cursor:pointer;" onclick="openTeacherCourse('${c.id}')">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <span class="status-pill ${c.status === 'published' ? 'status-ready' : 'status-outline'}">
+              ${c.status === 'published' ? 'Опубликован' : 'Черновик плана'}
+            </span>
+            <span style="font-size:0.8rem; color:var(--text-muted);">${c.difficulty}</span>
+          </div>
+          <div style="font-weight:700; font-size:1.1rem; margin-bottom:6px;">${c.title}</div>
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">${c.topic.slice(0, 90)}...</div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); border-top:1px solid var(--card-border); padding-top:8px;">
+            <span>Блоков: ${c.block_count}</span>
+            <span>Студентов: ${c.student_count}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleCreateCourse(e) {
+      e.preventDefault();
+      const btn = document.getElementById('genOutlineBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> ИИ разбирает тему и строит план...';
+
+      try {
+        const topic = document.getElementById('courseTopic').value;
+        const difficulty = document.getElementById('courseDifficulty').value;
+        const blocksCount = document.getElementById('courseBlocksCount').value;
+
+        const { course_id } = await api('/api/teacher/courses', {
+          method: 'POST',
+          body: JSON.stringify({ topic, difficulty, blocksCount })
+        });
+        switchTeacherTab('courses');
+        await openTeacherCourse(course_id);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Разобрать тему и составить план (ИИ)</span>';
+      }
+    }
+
+    async function openTeacherCourse(courseId) {
+      document.getElementById('teacherCoursesTab').classList.add('hidden');
+      document.getElementById('teacherCreateTab').classList.add('hidden');
+      document.getElementById('teacherCourseDetail').classList.remove('hidden');
+
+      const data = await api(`/api/teacher/courses/${courseId}`);
+      state.currentTeacherCourse = data;
+      renderTeacherCourseDetail();
+      loadCourseAnalytics(courseId);
+    }
+
+    function backToTeacherCourses() {
+      document.getElementById('teacherCourseDetail').classList.add('hidden');
+      document.getElementById('teacherCoursesTab').classList.remove('hidden');
+      loadTeacherCourses();
+    }
+
+    function renderTeacherCourseDetail() {
+      const { course, blocks } = state.currentTeacherCourse;
+      document.getElementById('tCourseTitle').textContent = course.title;
+      document.getElementById('tCourseDesc').textContent = course.description;
+
+      const pubContainer = document.getElementById('tCoursePublishBtnContainer');
+      if (course.status === 'published') {
+        pubContainer.innerHTML = `<span class="status-pill status-ready">Опубликован</span>`;
+        document.getElementById('tCourseInviteBox').innerHTML = `
+          <strong>Код приглашения для студентов:</strong>
+          <span style="background:#0f172a; padding:6px 12px; border-radius:6px; font-weight:700; font-size:1.1rem; border:1px solid var(--card-border); margin-left:8px; color:#38bdf8;">
+            ${course.invite_code}
+          </span>
+        `;
+      } else {
+        const allGenerated = blocks.every(b => b.content_status === 'generated');
+        pubContainer.innerHTML = `
+          <button class="btn btn-success" ${allGenerated ? '' : 'disabled'} onclick="publishCourse('${course.id}')" title="${allGenerated ? '' : 'Сначала сгенерируйте все блоки'}">
+            Опубликовать курс
+          </button>
+        `;
+        document.getElementById('tCourseInviteBox').innerHTML = `<span style="color:var(--warning); font-size:0.85rem;">Курс находится в режиме черновика. Чтобы открыть студентам доступ по коду, сгенерируйте все блоки и нажмите «Опубликовать».</span>`;
+      }
+
+      const list = document.getElementById('tBlocksList');
+      list.innerHTML = blocks.map((b) => `
+        <div class="block-card">
+          <div class="block-header">
+            <div>
+              <span style="font-weight:700;">Блок ${b.position}. ${b.title}</span>
+              <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Цель: ${b.goal}</div>
+            </div>
+            <span class="status-pill ${b.content_status === 'generated' ? 'status-ready' : 'status-outline'}">
+              ${b.content_status === 'generated' ? '✓ Сгенерирован' : 'Только план'}
+            </span>
+          </div>
+
+          <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+            <button class="btn btn-sm" id="genBlockBtn_${b.id}" onclick="generateBlockContent('${b.id}')">
+              ${b.content_status === 'generated' ? 'Перегенерировать блок (ИИ)' : 'Сгенерировать контент и тесты (ИИ)'}
+            </button>
+            ${b.content_status === 'generated' ? `
+              <span style="font-size:0.8rem; color:var(--text-muted);">
+                Тестов: ${b.quiz_questions.length} | Практика: ${b.practice_task ? '✓ Есть' : '—'}
+              </span>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function generateBlockContent(blockId) {
+      const btn = document.getElementById(`genBlockBtn_${blockId}`);
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Генерация через Claude API...';
+
+      try {
+        await api(`/api/teacher/blocks/${blockId}/generate`, { method: 'POST' });
+        // Перезагружаем структуру курса
+        const data = await api(`/api/teacher/courses/${state.currentTeacherCourse.course.id}`);
+        state.currentTeacherCourse = data;
+        renderTeacherCourseDetail();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Перегенерировать блок (ИИ)';
+      }
+    }
+
+    async function publishCourse(courseId) {
+      try {
+        await api(`/api/teacher/courses/${courseId}/publish`, { method: 'POST' });
+        const data = await api(`/api/teacher/courses/${courseId}`);
+        state.currentTeacherCourse = data;
+        renderTeacherCourseDetail();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function loadCourseAnalytics(courseId) {
+      const studentsContainer = document.getElementById('tStudentsList');
+      try {
+        const { students, blocks } = await api(`/api/teacher/courses/${courseId}/students`);
+        if (!students.length) {
+          studentsContainer.innerHTML = '<div style="color:var(--text-muted); font-size:0.9rem;">На курс пока никто не записался. Передайте студентам код приглашения.</div>';
+          return;
+        }
+        studentsContainer.innerHTML = `
+          <table style="width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px;">
+            <thead>
+              <tr style="text-align:left; border-bottom:1px solid var(--card-border); color:var(--text-muted);">
+                <th style="padding:8px;">Студент</th>
+                <th style="padding:8px;">Прогресс</th>
+                ${blocks.map(b => `<th style="padding:8px; text-align:center;">Блок ${b.position}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${students.map(s => `
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:8px; font-weight:600;">${s.full_name}</td>
+                  <td style="padding:8px;">${s.progress}%</td>
+                  ${s.blocks.map(b => `
+                    <td style="padding:8px; text-align:center;">
+                      <span class="status-pill ${b.completed ? 'status-passed' : (b.unlocked ? 'status-ready' : 'status-locked')}">
+                        ${b.completed ? '✓ Сдан' : (b.unlocked ? 'В процессе' : 'Закрыт')}
+                      </span>
+                    </td>
+                  `).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (e) {
+        studentsContainer.innerHTML = 'Не удалось загрузить успеваемость';
+      }
+    }
+
+    // ================= СТУДЕНТ =================
+    async function loadStudentCourses() {
+      const { courses } = await api('/api/student/courses');
+      const list = document.getElementById('studentCoursesList');
+      if (!courses.length) {
+        list.innerHTML = '<div class="card" style="grid-column: 1/-1;">Вы пока не записаны ни на один курс. Введите код приглашения выше, чтобы начать обучение.</div>';
+        return;
+      }
+      list.innerHTML = courses.map((c) => `
+        <div class="card" style="cursor:pointer;" onclick="openStudentCourse('${c.id}')">
+          <div style="font-weight:700; font-size:1.1rem; margin-bottom:6px;">${c.title}</div>
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">${c.description.slice(0, 90)}...</div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Прогресс: ${c.progress}%</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width:${c.progress}%;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleJoinCourse(e) {
+      e.preventDefault();
+      const input = document.getElementById('inviteCodeInput');
+      try {
+        const res = await api('/api/student/courses/join', {
+          method: 'POST',
+          body: JSON.stringify({ invite_code: input.value })
+        });
+        input.value = '';
+        await loadStudentCourses();
+        openStudentCourse(res.course_id);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function openStudentCourse(courseId) {
+      document.getElementById('studentCoursesSection').classList.add('hidden');
+      document.getElementById('studentCourseDetail').classList.remove('hidden');
+      document.getElementById('studentBlockWorkspace').classList.add('hidden');
+
+      const data = await api(`/api/student/courses/${courseId}`);
+      state.currentStudentCourse = data;
+
+      document.getElementById('sCourseTitle').textContent = data.course.title;
+      document.getElementById('sCourseDesc').textContent = data.course.description;
+      document.getElementById('sCourseProgressFill').style.width = `${data.course.progress}%`;
+
+      const list = document.getElementById('sBlocksList');
+      list.innerHTML = data.blocks.map((b) => `
+        <div class="block-card ${b.unlocked ? '' : 'locked'}">
+          <div class="block-header">
+            <div>
+              <span style="font-weight:700;">Блок ${b.position}. ${b.title}</span>
+              <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">${b.summary || b.goal}</div>
+            </div>
+            <span class="status-pill ${b.completed ? 'status-passed' : (b.unlocked ? 'status-ready' : 'status-locked')}">
+              ${b.completed ? '✓ Пройден' : (b.unlocked ? 'Открыт' : '🔒 Заблокирован')}
+            </span>
+          </div>
+
+          <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              Тест: ${b.quiz_passed ? `✓ ${b.best_quiz_score}%` : 'Не сдан'} | 
+              Практика: ${b.practice_passed ? `✓ ${b.best_practice_score}%` : 'Не сдана'}
+            </div>
+            ${b.unlocked ? `
+              <button class="btn btn-sm" onclick="openStudentBlockWorkspace('${b.id}')">
+                ${b.completed ? 'Повторить блок' : 'Перейти к уроку →'}
+              </button>
+            ` : '<span style="font-size:0.8rem; color:var(--text-muted);">Завершите предыдущий блок</span>'}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function backToStudentCourses() {
+      document.getElementById('studentCourseDetail').classList.add('hidden');
+      document.getElementById('studentCoursesSection').classList.remove('hidden');
+      loadStudentCourses();
+    }
+
+    async function openStudentBlockWorkspace(blockId) {
+      state.currentBlockId = blockId;
+      document.getElementById('studentCourseDetail').classList.add('hidden');
+      document.getElementById('studentBlockWorkspace').classList.remove('hidden');
+
+      const data = await api(`/api/student/blocks/${blockId}`);
+      const { block, quiz_questions, practice_task, attempts, submissions } = data;
+
+      document.getElementById('sbTitle').textContent = `Блок ${block.position}. ${block.title}`;
+      document.getElementById('sbTime').textContent = `${block.estimated_minutes || 45} мин.`;
+      document.getElementById('sbSummary').textContent = block.summary || '';
+      document.getElementById('sbConcepts').innerHTML = (block.key_concepts || []).map(c => `
+        <span class="status-pill status-outline" style="margin-right:6px;">${c}</span>
+      `).join('');
+
+      // Рендерим Markdown-конспект с заголовками
+      document.getElementById('sbTheory').innerHTML = (block.theory_markdown || '')
+        .split('\n')
+        .map(line => {
+          if (line.startsWith('### ')) return `<h3 style="margin:16px 0 8px; color:#38bdf8;">${line.slice(4)}</h3>`;
+          if (line.startsWith('* ')) return `<li style="margin-left:20px;">${line.slice(2)}</li>`;
+          if (line.trim().length === 0) return '<br/>';
+          return `<p style="margin-bottom:8px;">${line}</p>`;
+        })
+        .join('');
+
+      document.getElementById('sbCodeExample').textContent = block.code_example || '// Пример кода';
+
+      // Рендер теста
+      const quizContainer = document.getElementById('sbQuizQuestions');
+      quizContainer.innerHTML = quiz_questions.map((q, qIndex) => `
+        <div style="margin-bottom:16px; background:#131d31; padding:12px; border-radius:8px;">
+          <div style="font-weight:600; margin-bottom:8px;">${qIndex + 1}. ${q.question_text}</div>
+          ${q.options.map((opt, optIndex) => `
+            <label class="quiz-option">
+              <input type="radio" name="quiz_${qIndex}" value="${optIndex}" required />
+              <span>${opt}</span>
+            </label>
+          `).join('')}
+        </div>
+      `).join('');
+
+      document.getElementById('sbQuizResult').classList.add('hidden');
+
+      // Рендер практического задания
+      if (practice_task) {
+        document.getElementById('sbTaskInstructions').textContent = practice_task.instructions;
+        document.getElementById('sbPracticeCode').value = (submissions[0]?.code) || practice_task.starter_code || '';
+      }
+      document.getElementById('sbPracticeResult').classList.add('hidden');
+      document.getElementById('sbTutorAnswer').classList.add('hidden');
+    }
+
+    function backToStudentCourseDetail() {
+      document.getElementById('studentBlockWorkspace').classList.add('hidden');
+      openStudentCourse(state.currentStudentCourse.course.id);
+    }
+
+    async function handleQuizSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('sbQuizBtn');
+      btn.disabled = true;
+
+      const radios = document.querySelectorAll('#sbQuizForm input[type="radio"]:checked');
+      const answers = Array.from(radios).map(r => parseInt(r.value, 10));
+
+      try {
+        const res = await api(`/api/student/blocks/${state.currentBlockId}/quiz`, {
+          method: 'POST',
+          body: JSON.stringify({ answers })
+        });
+        const box = document.getElementById('sbQuizResult');
+        box.classList.remove('hidden');
+        box.className = `quiz-result ${res.passed ? 'pass' : 'fail'}`;
+        box.innerHTML = `
+          <strong>${res.passed ? '✓ Тест успешно сдан!' : '✗ Тест не пройден'}</strong>
+          <div>Правильных ответов: ${res.correct} из ${res.total} (Результат: ${res.score}%, порог: 70%)</div>
+        `;
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function handlePracticeSubmit() {
+      const btn = document.getElementById('sbPracticeBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Проверка кода через Claude API...';
+
+      const code = document.getElementById('sbPracticeCode').value;
+
+      try {
+        const res = await api(`/api/student/blocks/${state.currentBlockId}/practice`, {
+          method: 'POST',
+          body: JSON.stringify({ code })
+        });
+        const box = document.getElementById('sbPracticeResult');
+        box.classList.remove('hidden');
+        box.className = `quiz-result ${res.review.passed ? 'pass' : 'fail'}`;
+        box.innerHTML = `
+          <strong>Оценка ИИ: ${res.review.score} / 100 (${res.review.passed ? '✓ Зачтено' : 'На доработку'})</strong>
+          <div style="margin-top:6px; line-height:1.5;">${res.review.feedback}</div>
+        `;
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Отправить решение на проверку (ИИ)';
+      }
+    }
+
+    async function handleTutorAsk() {
+      const btn = document.getElementById('sbTutorBtn');
+      const input = document.getElementById('sbTutorQuestion');
+      const question = input.value.trim();
+      if (!question) return;
+
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      const code = document.getElementById('sbPracticeCode').value;
+
+      try {
+        const res = await api(`/api/student/blocks/${state.currentBlockId}/tutor`, {
+          method: 'POST',
+          body: JSON.stringify({ question, code })
+        });
+        const box = document.getElementById('sbTutorAnswer');
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <strong style="color:#38bdf8;">ИИ-наставник:</strong>
+          <div style="margin-top:6px; line-height:1.5; font-size:0.9rem;">${res.answer}</div>
+        `;
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Спросить';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
