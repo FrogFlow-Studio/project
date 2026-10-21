@@ -1,0 +1,28 @@
+{
+  "name": "web-dev-ai-course-platform",
+  "version": "1.0.0",
+  "description": "Клиент-серверная платформа дистанционного обучения «Web разработчик» с ИИ-декомпозицией тем на учебные блоки, тестами и проверкой кода (Node.js, Express, Supabase PostgreSQL, Claude API, Vercel)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "vitest run",
+    "capture": "node scripts/capture_assets.js",
+    "build:docx": "node scripts/generate_coursework_docx.js"
+  },
+  "engines": {
+    "node": ">=20.x"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@supabase/supabase-js": "^2.99.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "docx": "^9.6.1",
+    "playwright": "^1.58.2",
+    "vitest": "^4.1.1"
+  }
+}
