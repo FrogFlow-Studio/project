@@ -12,7 +12,7 @@ const apiKey = process.env.ANTHROPIC_API_KEY;
 const hasRealKey = Boolean(apiKey && !apiKey.includes('your-key') && apiKey.startsWith('sk-ant'));
 
 const anthropic = hasRealKey ? new Anthropic({ apiKey }) : null;
-const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-5-5';
 
 /**
  * Экранирование пользовательского ввода для защиты от промпт-инъекций
@@ -22,6 +22,12 @@ function escapeXmlTag(text = '') {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function extractClaudeText(response) {
+  if (!response || !Array.isArray(response.content)) return '';
+  const textBlock = response.content.find((b) => b.type === 'text' && b.text);
+  return textBlock ? textBlock.text : '';
 }
 
 /**
@@ -73,8 +79,7 @@ async function generateCourseFromTopic({ topic, difficulty = 'Средний', b
 
       const response = await anthropic.messages.create({
         model: DEFAULT_MODEL,
-        max_tokens: 4000,
-        temperature: 0.3,
+        max_tokens: 6000,
         system: systemPrompt,
         messages: [
           {
@@ -84,7 +89,7 @@ async function generateCourseFromTopic({ topic, difficulty = 'Средний', b
         ]
       });
 
-      const contentText = response.content?.[0]?.text || '';
+      const contentText = extractClaudeText(response);
       const jsonMatch = contentText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -288,8 +293,7 @@ async function evaluatePracticeCode({ blockTitle, taskInstructions, expectedPatt
     try {
       const response = await anthropic.messages.create({
         model: DEFAULT_MODEL,
-        max_tokens: 700,
-        temperature: 0.2,
+        max_tokens: 1500,
         system: `Ты — система автоматизированной проверки кода онлайн-курса «Web разработчик».
 Оцени решение студента по шкале от 0 до 100 баллов. Если решение неполное, укажи на ошибку и дай подсказку, но НЕ пиши полный готовый код за студента.
 Ответь строго в формате JSON: {"score": число, "feedback": "подробный комментарий на русском языке"}`,
@@ -303,7 +307,7 @@ async function evaluatePracticeCode({ blockTitle, taskInstructions, expectedPatt
           }
         ]
       });
-      const text = response.content?.[0]?.text || '';
+      const text = extractClaudeText(response);
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -351,8 +355,7 @@ async function askAiTutor({ blockTitle, theoryMarkdown, taskInstructions, studen
     try {
       const response = await anthropic.messages.create({
         model: DEFAULT_MODEL,
-        max_tokens: 600,
-        temperature: 0.3,
+        max_tokens: 1500,
         system: `Ты — ИИ-наставник онлайн-курса «Web разработчик».
 Твоя задача — помогать студенту разобраться в теории текущего блока и находить причину ошибок в коде.
 Строгие правила:
@@ -370,7 +373,8 @@ async function askAiTutor({ blockTitle, theoryMarkdown, taskInstructions, studen
           }
         ]
       });
-      return response.content?.[0]?.text || 'Не удалось получить ответ от модели.';
+      const text = extractClaudeText(response);
+      if (text) return text;
     } catch (err) {
       console.warn('Ошибка вызова Claude в режиме наставника, используется локальный ответ:', err.message);
     }

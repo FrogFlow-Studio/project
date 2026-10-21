@@ -594,6 +594,51 @@ USING (auth.uid() = user_id);`,
   };
 }
 
+const SUPABASE_BUCKET = 'platform-db';
+const SUPABASE_OBJECT_PATH = 'state.json';
+let cloudSyncInitialized = false;
+
+async function syncFromSupabaseCloud() {
+  if (!supabase || cloudSyncInitialized) return;
+  try {
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets || !buckets.find((b) => b.name === SUPABASE_BUCKET)) {
+      await supabase.storage.createBucket(SUPABASE_BUCKET, { public: false });
+    }
+    const { data: blob, error } = await supabase.storage
+      .from(SUPABASE_BUCKET)
+      .download(SUPABASE_OBJECT_PATH);
+    if (!error && blob) {
+      const text = await blob.text();
+      const parsed = JSON.parse(text);
+      if (parsed && Array.isArray(parsed.courses)) {
+        writeLocalDb(parsed, false);
+        cloudSyncInitialized = true;
+        return;
+      }
+    }
+    // Если в облаке ещё нет снимка — загружаем начальный курс в Supabase
+    const initial = readLocalDb();
+    await pushToSupabaseCloud(initial);
+    cloudSyncInitialized = true;
+  } catch (_) {
+    // Fallback на локальный кэш при сетевой недоступности
+  }
+}
+
+async function pushToSupabaseCloud(data) {
+  if (!supabase) return;
+  try {
+    const payload = Buffer.from(JSON.stringify(data, null, 2), 'utf8');
+    await supabase.storage.from(SUPABASE_BUCKET).upload(SUPABASE_OBJECT_PATH, payload, {
+      contentType: 'application/json',
+      upsert: true
+    });
+  } catch (_) {
+    // Игнорируем сбои фоновой репликации
+  }
+}
+
 function ensureLocalDataFile() {
   try {
     const dir = path.dirname(DATA_FILE);
@@ -626,7 +671,7 @@ function readLocalDb() {
   }
 }
 
-function writeLocalDb(data) {
+function writeLocalDb(data, syncCloud = true) {
   memoryDbCache = data;
   try {
     ensureLocalDataFile();
@@ -634,11 +679,14 @@ function writeLocalDb(data) {
   } catch (_) {
     // В read-only окружении данные сохраняются в оперативном кэше инстанса
   }
+  if (syncCloud && supabase) {
+    pushToSupabaseCloud(data);
+  }
 }
 
 function resetLocalDb() {
   const seed = getInitialSeedData();
-  writeLocalDb(seed);
+  writeLocalDb(seed, true);
   return seed;
 }
 
@@ -646,12 +694,18 @@ function resetLocalDb() {
  * Получить список всех курсов с количеством блоков
  */
 async function listCourses() {
+  await syncFromSupabaseCloud();
   if (supabase) {
     const { data: courses, error } = await supabase
       .from('courses')
       .select('*, course_blocks(count)')
       .order('created_at', { ascending: false });
-    if (!error && courses) return courses;
+    if (!error && Array.isArray(courses) && courses.length > 0) {
+      return courses.map((c) => ({
+        ...c,
+        block_count: c.course_blocks?.[0]?.count ?? 0
+      }));
+    }
   }
   const db = readLocalDb();
   return db.courses.map((c) => {
@@ -667,6 +721,7 @@ async function listCourses() {
  * Получить подробную структуру курса (блоки, тесты без правильных ответов для студента, задания)
  */
 async function getCourseDetails(courseId, includeCorrectAnswers = false) {
+  await syncFromSupabaseCloud();
   const db = readLocalDb();
   const course = db.courses.find((c) => c.id === courseId);
   if (!course) return null;
@@ -928,6 +983,7 @@ async function saveTutorInteraction(userId, blockId, question, code, aiResponse)
  * Получить аналитику и журнал решений для кабинета преподавателя
  */
 async function getDashboardStats(userId = 'u-student-01') {
+  await syncFromSupabaseCloud();
   const db = readLocalDb();
   const enrichedSubmissions = db.submissions.map((s) => {
     const user = db.users.find((u) => u.id === s.user_id);
